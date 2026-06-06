@@ -1,6 +1,5 @@
 import numpy as np
 from numpy.typing import NDArray
-import torch
 
 
 class Solution:
@@ -12,17 +11,8 @@ class Solution:
         # Normalize: x_hat = (x - mean) / sqrt(var + eps)
         # Scale and shift: out = gamma * x_hat + beta
         # return np.round(your_answer, 5)
-        mean = 0
-        n = len(x)
-        for i in range(n):
-            mean += x[i]/n
-        sd = x - mean
-        var = sum(sd**2)/n
-        denom = (var+10**-5)**0.5
-        x_hat = []
-        for i in range(n):
-            dev = x[i] - mean
-            xi_hat = (dev/denom)*gamma[i] + beta[i]
-            x_hat.append(round(xi_hat, 5))
-        return x_hat
+        mean,var = np.mean(x), np.var(x)
+        eps = 1e-5
+        return np.round(((x-mean)/(np.sqrt(var+eps)))*gamma + beta, 5)
+        pass
 
