@@ -11,4 +11,4 @@ class Solution:
         new_embed = []
         for i in token_ids:
             new_embed.append(embeddings[i])
-        return np.round(np.array(new_embed), 5)
+        return np.round(new_embed, 5)
