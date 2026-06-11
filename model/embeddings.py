@@ -8,7 +8,5 @@ class Solution:
         # token_ids: 1D array of integer token IDs
         # Return the embedding vectors for the given token IDs
         # return np.round(your_answer, 5)
-        new_embed = []
-        for i in token_ids:
-            new_embed.append(embeddings[i])
+        new_embed = [embeddings[i] for i in token_ids]
         return np.round(new_embed, 5)
