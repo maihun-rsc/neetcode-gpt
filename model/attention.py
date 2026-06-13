@@ -10,13 +10,14 @@ class SingleHeadAttention(nn.Module):
         torch.manual_seed(0)
         # Create three linear projections (Key, Query, Value) with bias=False
         # Instantiation order matters for reproducible weights: key, query, value
+        self.attention_dim = attention_dim
         self.key = nn.Linear(embedding_dim, attention_dim, bias = False)
         self.query = nn.Linear(embedding_dim, attention_dim, bias = False)
         self.value = nn.Linear(embedding_dim, attention_dim, bias = False)
 
     def forward(self, embedded: TensorType[float]) -> TensorType[float]:
         K, Q, V = self.key(embedded), self.query(embedded), self.value(embedded)
-        attention_scores = Q @ torch.transpose(K, 1, 2) / ((K.shape[2])**0.5)
+        attention_scores = Q @ K.transpose(-2, -1) / ((self.attention_dim)**0.5)
  
         lower_triangular = torch.tril(torch.ones(K.shape[1], K.shape[1])) 
         mask = lower_triangular == 0
