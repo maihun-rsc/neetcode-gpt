@@ -22,6 +22,6 @@ class SingleHeadAttention(nn.Module):
         lower_triangular = torch.tril(torch.ones(K.shape[1], K.shape[1])) 
         mask = lower_triangular == 0
         masked_scores = attention_scores.masked_fill(mask, float('-inf'))
-        masked_scores = nn.functional.softmax(masked_scores, dim=2)
+        masked_scores = torch.softmax(masked_scores, dim=2)
         
         return torch.round(masked_scores @ V, decimals = 4)
