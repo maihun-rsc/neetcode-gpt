@@ -14,17 +14,13 @@ class TransformerBlock(nn.Module):
         self.feedforward = self.VanillaNeuralNetwork(model_dim)
         self.layer_norm_1 = nn.LayerNorm(model_dim) 
         self.layer_norm_2 = nn.LayerNorm(model_dim)
-        pass
 
     def forward(self, embedded: TensorType[float]) -> TensorType[float]:
         torch.manual_seed(0)
         # Two residual connections with Pre-LN:
-        x = embedded
-        x = x + self.attention(self.layer_norm_1(x))
-        x = x + self.feedforward(self.layer_norm_2(x))
-        return torch.round(x, decimals = 4)
-        # Return result rounded to 4 decimal places
-        pass
+        embedded += self.attention(self.layer_norm_1(embedded))
+        embedded += self.feedforward(self.layer_norm_2(embedded))
+        return torch.round(embedded, decimals = 4)
 
     class MultiHeadedSelfAttention(nn.Module):
 
